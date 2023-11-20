@@ -304,6 +304,13 @@ class Page {
     const annotationsArray = this.annotations.filter(
       a => !(a instanceof Ref && deletedAnnotations.has(a))
     );
+
+    // annotations.push({
+    //   annotationType: 1,
+    //   rect: [428.48, 453.15, 441.69, 468.8],
+    //   value: '测试text',
+    // });
+
     const newData = await AnnotationFactory.saveNewAnnotations(
       partialEvaluator,
       task,

@@ -81,6 +81,7 @@ class AnnotationEditor {
 
   _uiManager = null;
 
+  // 可选中标识
   _focusEventsAllowed = true;
 
   _l10nPromise = null;
@@ -353,6 +354,7 @@ class AnnotationEditor {
    * onfocus callback.
    */
   focusin(event) {
+    console.log('focusin', this.id)
     if (!this._focusEventsAllowed) {
       return;
     }
@@ -368,6 +370,8 @@ class AnnotationEditor {
    * @param {FocusEvent} event
    */
   focusout(event) {
+    debugger
+    console.log('focusout', this.id)
     if (!this._focusEventsAllowed) {
       return;
     }

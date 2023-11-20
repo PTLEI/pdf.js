@@ -1160,6 +1160,7 @@ class AnnotationEditorUIManager {
    * @param {AnnotationEditorLayer} layer
    */
   addLayer(layer) {
+    // 按需加载 - 每次新增一个 layer 的处理逻辑 （有对annotation -> editor 的转换）
     this.#allLayers.set(layer.pageIndex, layer);
     if (this.#isEnabled) {
       layer.enable();
@@ -1217,6 +1218,7 @@ class AnnotationEditorUIManager {
   }
 
   addNewEditorFromKeyboard() {
+    // 快捷键创建 -> 暂时只发现回车
     this.currentLayer.addNewEditor();
   }
 
@@ -1245,6 +1247,7 @@ class AnnotationEditorUIManager {
       return;
     }
     if (type === AnnotationEditorParamsType.CREATE) {
+      // 暂时只有图片注释的点击按钮触发
       this.currentLayer.addNewEditor();
       return;
     }
@@ -1388,6 +1391,7 @@ class AnnotationEditorUIManager {
    * @param {AnnotationEditor} editor
    */
   #addEditorToLayer(editor) {
+    // 看着也像是做undo、redo
     const layer = this.#allLayers.get(editor.pageIndex);
     if (layer) {
       layer.addOrRebuild(editor);

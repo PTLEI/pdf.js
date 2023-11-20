@@ -354,6 +354,11 @@ class AnnotationFactory {
             )
           );
           break;
+        case AnnotationType.TEXT:
+          promises.push(
+            TextAnnotation.createNewAnnotation(xref, annotation, dependencies)
+          );
+          break;
         case AnnotationEditorType.INK:
           promises.push(
             InkAnnotation.createNewAnnotation(xref, annotation, dependencies)
@@ -3626,6 +3631,31 @@ class TextAnnotation extends MarkupAnnotation {
       this.data.state = null;
       this.data.stateModel = null;
     }
+  }
+
+  static async createNewAppearanceStream() {
+    return null;
+  }
+
+  static createNewDict(annotation, xref) {
+    const { rect, value } = annotation;
+    const text = new Dict(xref);
+    text.set("Type", Name.get("Annot"));
+    text.set("Subtype", Name.get("Text"));
+    text.set("Rect", rect);
+    text.set("Name", Name.get("Note"));
+    text.set("P", "35 0 R");
+    text.set("C", [1, 1, 0]);
+    text.set("CA", 1);
+    text.set("T", stringToUTF16String("注释", /* bigEndian = */ true));
+    text.set(
+      "Contents",
+      isAscii(value)
+        ? value
+        : stringToUTF16String(value, /* bigEndian = */ true)
+    );
+
+    return text;
   }
 }
 

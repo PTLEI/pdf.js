@@ -71,6 +71,7 @@ const AnnotationEditorPrefix = "pdfjs_internal_editor_";
 const AnnotationEditorType = {
   DISABLE: -1,
   NONE: 0,
+  TEXT: 1,
   FREETEXT: 3,
   STAMP: 13,
   INK: 15,

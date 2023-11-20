@@ -2190,6 +2190,8 @@ class PopupElement {
         div: popup,
       });
       popup.lastChild.classList.add("richText", "popupContent");
+    } else if (contentsObj instanceof HTMLElement) {
+      popup.append(contentsObj);
     } else {
       const contents = this._formatContents(contentsObj);
       popup.append(contents);
@@ -3065,4 +3067,5 @@ export {
   FreeTextAnnotationElement,
   InkAnnotationElement,
   StampAnnotationElement,
+  TextAnnotationElement,
 };

@@ -133,7 +133,7 @@
   cursor: var(--editorInk-editing-cursor);
 }
 
-.annotationEditorLayer :is(.freeTextEditor, .inkEditor, .stampEditor) {
+.annotationEditorLayer :is(.freeTextEditor, .inkEditor, .stampEditor, .textEditor) {
   position: absolute;
   background: transparent;
   z-index: 1;
@@ -358,7 +358,7 @@
 }
 
 .annotationEditorLayer {
-  :is(.freeTextEditor, .inkEditor, .stampEditor) {
+  :is(.freeTextEditor, .inkEditor, .stampEditor, .textEditor) {
     & > .resizers {
       position: absolute;
       inset: 0;

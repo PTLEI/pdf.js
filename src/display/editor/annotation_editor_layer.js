@@ -28,6 +28,7 @@ import { FreeTextEditor } from "./freetext.js";
 import { InkEditor } from "./ink.js";
 import { setLayerDimensions } from "../display_utils.js";
 import { StampEditor } from "./stamp.js";
+import { TextEditor } from "./text.js";
 
 /**
  * @typedef {Object} AnnotationEditorLayerOptions
@@ -76,7 +77,7 @@ class AnnotationEditorLayer {
   static _initialized = false;
 
   static #editorTypes = new Map(
-    [FreeTextEditor, InkEditor, StampEditor].map(type => [
+    [FreeTextEditor, InkEditor, StampEditor, TextEditor].map(type => [
       type._editorType,
       type,
     ])
@@ -101,6 +102,7 @@ class AnnotationEditorLayer {
         editorType.initialize(l10n);
       }
     }
+    // 在 tools 中
     uiManager.registerEditorTypes(editorTypes);
 
     this.#uiManager = uiManager;
@@ -216,6 +218,8 @@ class AnnotationEditorLayer {
     }
 
     const editables = this.#annotationLayer.getEditableAnnotations();
+    // 这里做 annotation -> editor 的转换
+    console.log(editables);
     for (const editable of editables) {
       // The element must be hidden whatever its state is.
       editable.hide();
@@ -373,6 +377,7 @@ class AnnotationEditorLayer {
    * @param {AnnotationEditor} editor
    */
   add(editor) {
+    // 这个应该比较重要！！！！！！！！！！！
     this.changeParent(editor);
     this.#uiManager.addEditor(editor);
     this.attach(editor);
@@ -469,6 +474,7 @@ class AnnotationEditorLayer {
     const editorType = AnnotationEditorLayer.#editorTypes.get(
       this.#uiManager.getMode()
     );
+    console.log(editorType);
     return editorType ? new editorType.prototype.constructor(params) : null;
   }
 
@@ -483,6 +489,7 @@ class AnnotationEditorLayer {
 
     const { offsetX, offsetY } = this.#getCenterPoint();
     const id = this.getNextId();
+    // 图片注释入口
     const editor = this.#createNewEditor({
       parent: this,
       id,
@@ -517,6 +524,7 @@ class AnnotationEditorLayer {
    * @returns {AnnotationEditor}
    */
   #createAndAddNewEditor(event, isCentered) {
+    // 负责文本、ink多个入口
     const id = this.getNextId();
     const editor = this.#createNewEditor({
       parent: this,
@@ -553,6 +561,7 @@ class AnnotationEditorLayer {
    * Create and add a new editor.
    */
   addNewEditor() {
+    // 快捷、按钮触发入口
     this.#createAndAddNewEditor(
       this.#getCenterPoint(),
       /* isCentered = */ true
@@ -596,6 +605,7 @@ class AnnotationEditorLayer {
    * @param {PointerEvent} event
    */
   pointerup(event) {
+    // 单机创建新的Editor实例
     const { isMac } = FeatureTest.platform;
     if (event.button !== 0 || (event.ctrlKey && isMac)) {
       // Don't create an editor on right click.
@@ -625,6 +635,7 @@ class AnnotationEditorLayer {
       return;
     }
 
+    // 单击创建新的Editor实例
     this.#createAndAddNewEditor(event, /* isCentered = */ false);
   }
 
@@ -721,6 +732,7 @@ class AnnotationEditorLayer {
     this.viewport = viewport;
     setLayerDimensions(this.div, viewport);
     for (const editor of this.#uiManager.getEditors(this.pageIndex)) {
+      // 按需加载 -> 对存量的 editors 重新加载 （当次 document loaded）
       this.add(editor);
     }
     this.updateMode();

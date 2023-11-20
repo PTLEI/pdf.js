@@ -67,7 +67,8 @@ class Toolbar {
             const { classList } = options.editorFreeTextButton;
             return classList.contains("toggled")
               ? AnnotationEditorType.NONE
-              : AnnotationEditorType.FREETEXT;
+              // : AnnotationEditorType.FREETEXT;
+            : AnnotationEditorType.TEXT;
           },
         },
       },
@@ -151,6 +152,7 @@ class Toolbar {
 
     // The buttons within the toolbar.
     for (const { element, eventName, eventDetails } of this.buttons) {
+      // 按钮绑定事件
       element.addEventListener("click", evt => {
         if (eventName !== null) {
           this.eventBus.dispatch(eventName, {
@@ -212,7 +214,9 @@ class Toolbar {
     const editorModeChanged = ({ mode }) => {
       toggleCheckedBtn(
         editorFreeTextButton,
-        mode === AnnotationEditorType.FREETEXT,
+        // mode === AnnotationEditorType.FREETEXT,
+        mode === AnnotationEditorType.TEXT,
+        // 这里也要改
         editorFreeTextParamsToolbar
       );
       toggleCheckedBtn(
